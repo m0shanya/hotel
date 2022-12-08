@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block title %}Product page{% endblock %}
+
+{% block content %}
+<main class="product-details">
+  <img src="
+    {% if product.image %}
+      {{ product.image.url }}
+    {% else %}
+      {% static 'no-image.jpg' %}
+    {% endif %}" class="img-thumbnail" alt="prod_image">
+  <h1 class="my-4">{{ product.title }}</h1>
+  <div class="row">
+    <div class="col-8">
+      <h4 class="mb-3">Cost: {{ product.cost }} BYN</h4>
+      <div class="mb-3">
+        <h4 class="mb-3">Description:</h4>
+        {{ product.description }}
+      </div>
+
+      <form method="post" action="{% url 'cart_add' product.id %}">
+        {% csrf_token %}
+            <h3 class="mb-3">Add to cart</h3>
+            <div class="row">
+              <div class="col-6">
+                <div class="input-group mb-3">
+                  <input name="quantity" type="number" class="form-control" placeholder="Count of members"
+                         aria-label="Quantity" aria-describedby="product-quantity" max="{{ product.quantity }}"
+                    value="{{ product.quantity }}">
+                    <span class="input-group-text" id="product-quantity">
+                      <button href="{% url 'cart_add' product.id %}"  type="submit" class="btn">in Cart</button>
+                    </span>
+                </div>
+              </div>
+            </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+</main>
+{% endblock %}

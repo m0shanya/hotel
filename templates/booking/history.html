@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n static crispy_forms_filters%}
+{% load static %}
+
+{% block title %}
+    History
+{% endblock %}
+{% block content %}
+    <h1>History</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit price</th>
+            <th>Price</th>
+            <th>Date Come</th>
+            <th>Date Out</th>
+            <th>Date of order</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in order %}
+            {% with product=item.purchase %}
+                <tr>
+                    <td>
+                            <img src="
+                                {% if product.image %}
+                                    {{ product.image.url }}
+                                {% else %}
+                                    {% static 'no-image.jpg' %}
+                                {% endif %}" width="80" height="80">
+                    </td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ item.count }}</td>
+                    <td class="num">{{ item.cost }} BYN</td>
+                    <td class="num">{{ item.get_cost}} BYN</td>
+                    <td>{{ item.date_come }}</td>
+                    <td>{{ item.date_out }}</td>
+                    <td>{{ item.created_at }}</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+          </tbody>
+    </table>
+{% endblock %}

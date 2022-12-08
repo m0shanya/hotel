@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Your shopping cart
+{% endblock %}
+{% block content %}
+    <h1>Your shopping cart</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>Room</th>
+            <th>Persons</th>
+            <th>Unit price</th>
+            <th>Price</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td>
+                        <a href="{% url "product_details_view" product.id%}">
+                            <img src="
+                                {% if product.image %}
+                                    {{ product.image.url }}
+                                {% else %}
+                                    {% static 'no-image.jpg' %}
+                                {% endif %}" width="80" height="80">
+                        </a>
+                    </td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="num">{{ item.cost }}</td>
+                    <td class="num">{{ item.total_cost }}</td>
+                    <td><a class="btn btn-danger btn-sm" href="{% url "cart_remove" product.id%}" role="button">Remove</a></td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">{{ cart.get_total_price }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a class="btn btn-dark btn-sm" href="{% url "main" %}" role="button">Continue booking</a>
+        <a class="btn btn-dark btn-sm" href="{% url "order" %}" role="button">
+            Checkout
+        </a>
+    </p>
+{% endblock %}
